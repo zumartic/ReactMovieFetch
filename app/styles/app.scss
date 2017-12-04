@@ -1,0 +1,41 @@
+$space-large: 2.5rem;
+$title-color: #555;
+
+.page-title {
+    color: $title-color;
+    margin-top: $space-large;
+    margin-bottom: $space-large;
+}
+
+.movie-message {
+    margin-bottom: 1rem;
+}
+
+.poster {
+    float:left;
+    max-width:300px;
+    max-height: 300px;
+    margin-right: 1rem;
+}
+
+.search-history {
+    clear: both;
+}
+
+.button-container {
+    clear: both;
+    margin-top: 1rem;
+}
+
+input[type=search] {
+    box-shadow: none;
+}
+
+.fav-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-remove {
+    color: white;
+}
