@@ -14,8 +14,8 @@ store.subscribe(() => {
   console.log('New State', store.getState())
 });
 
-store.dispatch(actions.addToFavourites('Testing'));
-store.dispatch(actions.addToFavourites('Uuno Turhapuro'));
+//store.dispatch(actions.addToFavourites('Testing'));
+//store.dispatch(actions.addToFavourites('Uuno Turhapuro'));
 //store.dispatch(actions.getFavourites);
 
 //store.dispatch(actions.fetchMovie('uuno'));
