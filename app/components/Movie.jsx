@@ -1,13 +1,16 @@
 var React = require('react');
 var {Link, IndexLink} = require('react-router');
+var {connect} = require('react-redux');
+
 var MovieForm = require('MovieForm');
 var MovieMessage = require('MovieMessage');
 var ErrorModal = require('ErrorModal');
 var openWeatherMap = require('openWeatherMap');
 var OMDbAPI = require('OMDbAPI');
+var actions = require('actions');
 
-var Movie = React.createClass ({
-    getInitialState: function (){
+const Movie = (props) => {
+ /*   getInitialState: function (){
         return {
             isLoading: false,
             title: undefined,
@@ -56,7 +59,7 @@ var Movie = React.createClass ({
             });
         });
     },
-    componentDidMount: function (){
+    /*componentDidMount: function (){
         var title = this.props.location.query.title;
         
         if (title && title.length > 0) {
@@ -82,7 +85,7 @@ var Movie = React.createClass ({
             this.handleSearch(title);
             window.location.hash = '#/';
         }
-    },  /*
+    },
     onSearch: function(e){
         console.log("TEWEWRERW");
         e.preventDefault();
@@ -92,7 +95,7 @@ var Movie = React.createClass ({
             this.refs.location.value = '';
             window.location.hash = '#/?location=' + encodedLocation;
         }
-    },*/
+    },
     handleAddFavourite: function () {
         if (this.state.favourites.indexOf(this.state.title) < 0) {
             var newFavourite = this.state.favourites;
@@ -113,25 +116,34 @@ var Movie = React.createClass ({
             localStorage.setItem('favourites', json);
         } 
 
-    },
-    render: function () {
-        var {isLoading, title, year, poster, plot, director, writer, actors, errorMessage, searchHistory, favourites} = this.state;
-        var that = this;
+    },*/
+    
+        var {dispatch} = props;
+        var {isLoading, title, year, poster, plot, director, writer, actors, errorMessage} = props.state.searchMovie;
+        var favourites = props.state.handleFavourite;
+        var searchHistory = props.state.handleHistory;
+        
+        function componentWillReceiveProps () {
+            console.log("props");
+        };
+
+        function handleAddFavourite  (e) {
+            e.preventDefault();
+            dispatch(actions.addToFavourites(title));
+        }
+
+        function handleRemoveFavourite  (e) {
+            e.preventDefault();
+            dispatch(actions.removeFavourite(title));
+        }
+
         function renderMessage(){
             if(isLoading){
                 return <h3 className="text-center">Fetching movie...</h3>;
             }else if(title){
                 return (
                 <div>
-                    <div className="movie-message"><MovieMessage 
-                        title={title}
-                        year={year} 
-                        poster={poster}
-                        plot={plot}
-                        director={director}
-                        writer={writer}
-                        actors={actors}
-                        />
+                    <div className="movie-message"><MovieMessage />
                     </div>
                     <div className="button-container">
                       {renderButton()}
@@ -142,16 +154,21 @@ var Movie = React.createClass ({
         }
         function renderButton() {
             return (
-            <button type="button" onClick={that.handleAddFavourite} className="search-history hollow button expanded">
-            Add to favourites
-            </button>
+                <div>
+                    <button type="button" onClick={handleAddFavourite} className="search-history hollow button expanded">
+                        Add to favourites
+                    </button>
+            </div>
             )
         }
 
         function renderError(){
             if (typeof errorMessage === 'string'){
                 return (
-                    <ErrorModal message={errorMessage}/>
+                    <div className="text-center">
+                        <h3 >Error</h3>
+                        <p>{errorMessage}</p>
+                    </div>
                 )
             }
         }
@@ -171,6 +188,7 @@ var Movie = React.createClass ({
         }
 
         function renderFavourites() {
+            //var favourites = that.state.handleFavourite;
             if(favourites.length>0){
                 return (
                     <div className="text-center search-history">
@@ -178,14 +196,11 @@ var Movie = React.createClass ({
                         {favourites.map((item, index)=>{
                             var tempTitle = `/?title=${item}`;
                             return <p key={index} className="fav-container">
-                            
-                            <Link to={tempTitle}>{item}</Link>
-                            <button type="submit" value={item} onClick={that.handleRemoveFavourite} className="hollow button alert button--remove">
-                            remove
-                            </button>
-                            
-                            
-                            </p>
+                                <Link to={tempTitle}>{item}</Link>
+                                <button type="submit" value={item} onClick={handleRemoveFavourite} className="hollow button alert button--remove">
+                                    remove
+                                </button>
+                                </p>
                         })}
                     </div>
                 )
@@ -195,14 +210,20 @@ var Movie = React.createClass ({
         return (
             <div>
                 <h1 className="text-center page-title">Get Movie Info</h1>
-                <MovieForm onSearch={this.handleSearch}/>
+                <MovieForm />
                 {renderMessage()}
                 {renderError()}
                 {renderFavourites()}
                 {renderHistory()}
             </div>
         );
-    }
-});
+    
+};
 
-module.exports = Movie;
+module.exports = connect(
+    (state) => {
+        return {
+            state
+        };
+    }
+)(Movie);

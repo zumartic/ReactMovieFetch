@@ -1,6 +1,8 @@
 var React = require('react');
+var {connect} = require('react-redux');
 
-var MovieMessage = ({title,year, poster, plot, director, writer, actors}) => {
+var MovieMessage = (props) => {
+    var {title,year, poster, plot, director, writer, actors} = props;
     return (
         <div>
             <h3 className="text-center">{title} ({year})</h3>
@@ -13,4 +15,15 @@ var MovieMessage = ({title,year, poster, plot, director, writer, actors}) => {
     );
 }
 
-module.exports = MovieMessage;
+module.exports = connect(
+    (state) => {
+        return {
+            title: state.searchMovie.title,
+            year: state.searchMovie.year, 
+            poster: state.searchMovie.poster, 
+            plot: state.searchMovie.plot, 
+            director: state.searchMovie.director, 
+            writer: state.searchMovie.writer, 
+            actors: state.searchMovie.actors};
+    }
+)(MovieMessage);

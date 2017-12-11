@@ -1,16 +1,20 @@
 var React = require('react');
+var {connect} = require('react-redux');
+var actions = require('actions');
 
 var MovieForm = React.createClass({
     onFormSubmit: function (e) {
         e.preventDefault();
+        var {dispatch} = this.props;
         var title = this.refs.title.value;
 
         if(title.length > 0){
             this.refs.title.value = '';
-            this.props.onSearch(title);
+            dispatch(actions.fetchMovie(title));
         }
     },
     render: function (){
+        var {dispatch} = this.props;
         return (
             <form onSubmit={this.onFormSubmit}>
                 <div>
@@ -24,4 +28,4 @@ var MovieForm = React.createClass({
     }
 });
 
-module.exports = MovieForm;
+module.exports = connect()(MovieForm);

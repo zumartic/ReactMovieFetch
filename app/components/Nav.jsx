@@ -1,14 +1,18 @@
 var React = require('react');
 var {Link, IndexLink} = require('react-router');
+var {connect} = require('react-redux');
+var actions = require('actions');
 
 var Nav = React.createClass({
     onSearch: function(e){
         e.preventDefault();
+        var {dispatch} = this.props;
         var title = this.refs.title.value;
         var encodedTitle = encodeURIComponent(title);
         if (title.length > 0 ) {
             this.refs.title.value = '';
-            window.location.hash = '#/?title=' + encodedTitle;
+            dispatch(actions.fetchMovie(encodedTitle));
+            window.location.hash = '';
         }
     },
     render: function(){
@@ -42,4 +46,4 @@ var Nav = React.createClass({
     }
 });
 
-module.exports = Nav;
+module.exports = connect()(Nav);
