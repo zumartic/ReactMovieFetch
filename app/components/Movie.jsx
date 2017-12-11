@@ -180,7 +180,7 @@ const Movie = (props) => {
                         <h4>Search History</h4>
                         {searchHistory.map((item, index)=>{
                             var tempTitle = `/?title=${item}`;
-                            return <p key={index}><Link to={dispatch(actions.fetchMovie(item))}>{item}</Link></p>
+                            return <p key={index}><Link to={tempTitle}>{item}</Link></p>
                         })}
                     </div>
                 )
