@@ -30,21 +30,22 @@ export var searchReducer = (state = {isLoading: false, title: undefined, errorMe
 
 export var favouriteReducer = (state = [], action) => {
     switch (action.type) {
-        case 'GET_FAVOURITE':
-            return [...state, action.title]
+       /* case 'GET_FAVOURITE':
+            return [...state, action.title]*/
         case 'SET_FAVOURITE':
             if(state.indexOf(action.title) < 0){
-                const json = JSON.stringify([...state, action.title]);
-                localStorage.setItem('favourites', json);
+               // const json = JSON.stringify([...state, action.title]);
+               // localStorage.setItem('favourites', json);
                 return [...state, action.title]
                 }
             else 
                 return state;
         case 'REMOVE_FAVOURITE':
             const nextState = state.filter((movie) => movie !== action.title);
+            console.log(action.title);
             console.log(nextState);
-            const json = JSON.stringify(nextState);
-            localStorage.setItem('favourites', json);
+            /*const json = JSON.stringify(nextState);
+            localStorage.setItem('favourites', json);*/
             return state.filter((movie) => movie !== action.title)
         default:
             return state;
